@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Deklarasi metadata dasar -->
+  <meta charset="UTF-8" /> <!-- Set karakter encoding ke UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Pengaturan viewport untuk responsif -->
+  <title>Countdown Tugas Mahasiswa</title> <!-- Judul halaman -->
+  
+  <!-- Menghubungkan ke Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  
+  <style>
+    /* Variabel CSS untuk tema warna */
+    :root {
+      --primary-color: #319795; /* Warna utama */
+      --accent-color: #A3E635;  /* Warna aksen */
+      --danger-color: #E53E3E;  /* Warna untuk keadaan bahaya */
+      --warning-color: #F97316; /* Warna peringatan */
+      --info-color: #B794F4;    /* Warna informasi */
+      --bg-light: #E6FFFA;      /* Warna background light mode */
+      --bg-dark: #1A202C;       /* Warna background dark mode */
+      --text-light: #F7FAFC;    /* Warna teks light mode */
+      --text-dark: #1A202C;     /* Warna teks dark mode */
+      --card-bg-light: #ffffff; /* Warna card light mode */
+      --card-bg-dark: #2D3748;  /* Warna card dark mode */
+      --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan light mode */
+      --shadow-dark: 0 4px 8px rgba(0, 0, 0, 0.3);  /* Bayangan dark mode */
+      --transition-speed: 0.3s; /* Kecepatan transisi */
+    }
+
+    /* Gaya dasar body */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Jenis font */
+      background-color: var(--bg-light); /* Warna background default */
+      color: var(--text-dark); /* Warna teks default */
+      transition: background-color var(--transition-speed), color var(--transition-speed); /* Transisi untuk dark mode */
+    }
+
+    /* Gaya untuk dark mode */
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    /* Gaya untuk halaman beranda */
+    .homepage {
+      position: relative;
+      min-height: calc(100vh - 160px); /* Tinggi minimum viewport dikurangi header/footer */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    /* Dark mode untuk homepage */
+    .dark-mode .homepage {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+    }
+
+    /* Konten welcome di homepage */
+    .welcome-content {
+      max-width: 800px;
+      background-color: rgba(255, 255, 255, 0.9); /* Background semi transparan */
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      animation: fadeIn 0.8s ease-out; /* Animasi muncul */
+    }
+
+    /* Dark mode untuk welcome content */
+    .dark-mode .welcome-content {
+      background-color: rgba(45, 55, 72, 0.9);
+      box-shadow: var(--shadow-dark);
+    }
+
+    /* Gaya untuk header welcome */
+    .welcome-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dark mode untuk header welcome */
+    .dark-mode .welcome-content h1 {
+      color: var(--accent-color);
+    }
+
+    /* Gaya untuk paragraf welcome */
+    .welcome-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    /* Container untuk tombol welcome */
+    .welcome-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Gaya welcome */
+    .welcome-btn {
+      padding: 12px 25px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: var(--shadow-light);
+    }
+
+    /* Efek hover untuk welcome */
+    .welcome-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Gaya ikon di welcome */
+    .welcome-btn i {
+      font-size: 1.1rem;
+    }
+
+    /* Variasi warna welcome */
+    .welcome-btn.tasks {
+      background-color: var(--accent-color);
+      color: var(--text-dark);
+    }
+
+    .welcome-btn.history {
+      background-color: var(--info-color);
+    }
+
+    /* Gaya header */
+    header {
+      background-color: var(--primary-color);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky; /* Header tetap di atas saat scroll */
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Gaya judul header */
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Gaya navigasi */
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    /* Gaya link navigasi */
+    nav a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 20px;
+      transition: background-color 0.2s;
+    }
+
+    /* Efek hover untuk link navigasi */
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Gaya untuk link aktif */
+    nav a.active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Container utama */
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+      animation: fadeIn 0.5s ease-in-out; /* Animasi muncul */
+    }
+
+    /* Toolbar untuk filter dan pencarian */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Bagian kiri dan kanan toolbar */
+    .left-tools, .right-tools {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Gaya tombol umum */
+    .btn {
+      padding: 10px 16px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    /* Efek hover tombol */
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Efek aktif tombol */
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Tombol bulat */
+    .btn-round {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Variasi warna tombol */
+    .theme-toggle {
+      background-color: var(--info-color);
+    }
+
+    .btn-filter {
+      background-color: var(--info-color);
+    }
+
+    .btn-view {
+      background-color: var(--info-color);
+    }
+
+    .btn-danger {
+      background-color: var(--danger-color);
+    }
+
+    /* Kotak pencarian */
+    .search-box {
+      position: relative;
+      flex-grow: 1;
+      max-width: 300px;
+    }
+
+    /* Input pencarian */
+    .search-box input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+
+    /* Dark mode untuk input pencarian */
+    .dark-mode .search-box input {
+      background-color: var(--card-bg-dark);
+      color: var(--text-light);
+      border-color: #4A5568;
+    }
+
+    /* Efek focus input pencarian */
+    .search-box input:focus {
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    /* Ikon pencarian */
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #718096;
+    }
+
+    /* Gaya dropdown selector */
+    .view-selector select,
+    .filter-selector select,
+    .sort-selector select {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      outline: none;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    /* Dark mode untuk dropdown */
+    .dark-mode select {
+      background-color: var(--card-bg-dark);
+      color: var(--text-light);
+      border-color: #4A5568;
+    }
+
+    /* Daftar tugas - tampilan list */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: all 0.3s;
+    }
+
+    /* Daftar tugas - tampilan grid */
+    .task-list.grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* Kartu tugas */
+    .task-card {
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-light);
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-left: 5px solid var(--accent-color);
+      animation: slideIn 0.3s ease-out; /* Animasi muncul */
+    }
+
+    /* Efek hover kartu tugas */
+    .task-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Judul tugas */
+    .task-card h3 {
+      margin: 0 0 5px 0;
+      font-size: 1.2em;
+      padding-right: 90px;
+    }
+
+    /* Nama mata kuliah */
+    .course-name {
+      font-size: 0.9em;
+      color: #718096;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    /* Dark mode untuk nama mata kuliah */
+    .dark-mode .course-name {
+      color: #A0AEC0;
+    }
+
+    /* Detail tugas */
+    .task-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Metadata tugas */
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #718096;
+    }
+
+    /* Dark mode untuk metadata */
+    .dark-mode .task-meta {
+      color: #718096;
+    }
+
+    /* Container progress bar */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    /* Dark mode untuk progress container */
+    .dark-mode .progress-container {
+      background-color: #4A5568;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      background-color: var(--accent-color);
+    }
+
+    /* Countdown timer */
+    .countdown {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--accent-color);
+      color: #000;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+      min-width: 80px;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    /* Aksi untuk tugas */
+    .task-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Tombol aksi tugas */
+    .task-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+      font-size: 0.9em;
+    }
+
+    /* Variasi warna tombol aksi */
+    .task-btn-edit {
+      background-color: var(--info-color);
+      color: white;
+    }
+
+    .task-btn-delete {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    .task-btn-complete {
+      background-color: var(--accent-color);
+      color: #000;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--primary-color);
+      padding: 30px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      color: #ffffff;
+      margin-top: 40px;
+      gap: 20px;
+    }
+
+    /* Div dalam footer */
+    footer div {
+      color: #ffffff;
+    }
+
+    /* Tampilan ketika tidak ada tugas */
+    .noTasks {
+      text-align: center;
+      padding: 40px;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+    }
+
+    /* Dark mode untuk no tasks */
+    .dark-mode .noTasks {
+      background-color: var(--card-bg-dark);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    /* Modal aktif */
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Konten modal */
+    .modal-content {
+      background-color: var(--card-bg-light);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+      transform: translateY(-50px);
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    /* Dark mode untuk modal content */
+    .dark-mode .modal-content {
+      background-color: var(--card-bg-dark);
+    }
+
+    /* Efek muncul modal */
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+
+    /* Tombol tutup modal */
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #718096;
+    }
+
+    /* Dark mode untuk tombol tutup */
+    .dark-mode .modal-close {
+      color: #A0AEC0;
+    }
+
+    /* Grup form */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    /* Label form */
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    /* Input form */
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-family: inherit;
+    }
+
+    /* Dark mode untuk input form */
+    .dark-mode .form-group input,
+    .dark-mode .form-group textarea,
+    .dark-mode .form-group select {
+      background-color: #4A5568;
+      color: var(--text-light);
+      border-color: #4A5568;
+    }
+
+    /* Efek focus input form */
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    /* Aksi modal */
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    /* Notifikasi */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: #444;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* Notifikasi muncul */
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Variasi warna notifikasi */
+    .notification-success {
+      background-color: #48BB78;
+    }
+
+    .notification-error {
+      background-color: #F56565;
+    }
+
+    .notification-info {
+      background-color: var(--primary-color);
+    }
+
+    /* Ikon notifikasi */
+    .notification-icon {
+      font-size: 1.2em;
+    }
+
+    /* Pesan notifikasi */
+    .notification-message {
+      flex-grow: 1;
+    }
+
+    /* Tombol tutup notifikasi */
+    .notification-close {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+
+    /* Tampilan kosong */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    /* Ikon empty state */
+    .empty-state i {
+      font-size: 4em;
+      color: var(--info-color);
+      margin-bottom: 20px;
+    }
+
+    /* Judul empty state */
+    .empty-state h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.5em;
+    }
+
+    /* Paragraf empty state */
+    .empty-state p {
+      margin: 0 0 20px 0;
+      color: #718096;
+      max-width: 500px;
+    }
+
+    /* Dark mode untuk empty state */
+    .dark-mode .empty-state p {
+      color: #718096;
+    }
+
+    /* Gaya section tentang */
+    .about-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Dark mode untuk about section */
+    .dark-mode .about-section {
+      background-color: var(--card-bg-dark);
+      box-shadow: var(--shadow-dark);
+    }
+
+    /* Judul about section */
+    .about-section h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
+
+    /* Subjudul about section */
+    .about-section h3 {
+      color: var(--primary-color);
+      margin-top: 25px;
+    }
+
+    /* Paragraf about section */
+    .about-section p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    /* List about section */
+    .about-section ul, .about-section ol {
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    /* Item list about section */
+    .about-section li {
+      margin-bottom: 8px;
+    }
+
+    /* Anggota tim */
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    /* Kartu anggota tim */
+    .team-member {
+      flex: 1;
+      min-width: 200px;
+      padding: 15px;
+      background-color: rgba(49, 151, 149, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    /* Dark mode untuk team member */
+    .dark-mode .team-member {
+      background-color: rgba(49, 151, 149, 0.2);
+    }
+
+    /* Nama anggota tim */
+    .team-member h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+
+    /* Gaya section kontak */
+    .contact-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Dark mode untuk contact section */
+    .dark-mode .contact-section {
+      background-color: var(--card-bg-dark);
+      box-shadow: var(--shadow-dark);
+    }
+
+    /* Judul contact section */
+    .contact-section h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
+
+    /* Paragraf contact section */
+    .contact-section p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    /* Daftar kontak */
+    .contact-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    /* Item kontak */
+    .contact-list li {
+      margin-bottom: 15px;
+      padding: 15px;
+      background-color: rgba(49, 151, 149, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    /* Dark mode untuk item kontak */
+    .dark-mode .contact-list li {
+      background-color: rgba(49, 151, 149, 0.2);
+    }
+
+    /* Nama kontak */
+    .contact-name {
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    /* Email kontak */
+    .contact-email {
+      color: #718096;
+    }
+
+    /* Dark mode untuk email kontak */
+    .dark-mode .contact-email {
+      color: #718096;
+    }
+
+    /* Link email */
+    .contact-email a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Efek hover link email */
+    .contact-email a:hover {
+      text-decoration: underline;
+    }
+
+    /* Tombol kembali */
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform 0.2s;
+    }
+
+    /* Efek hover tombol kembali */
+    .back-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Section riwayat tugas */
+    .history-section {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Header riwayat */
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Judul riwayat */
+    .history-title {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    /* Dark mode untuk judul riwayat */
+    .dark-mode .history-title {
+      color: var(--accent-color);
+    }
+
+    /* Kontrol riwayat */
+    .history-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Tampilan kosong riwayat */
+    .history-empty {
+      text-align: center;
+      padding: 40px;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+    }
+
+    /* Dark mode untuk history empty */
+    .dark-mode .history-empty {
+      background-color: var(--card-bg-dark);
+    }
+
+    /* Ikon history empty */
+    .history-empty i {
+      font-size: 4em;
+      color: var(--info-color);
+      margin-bottom: 20px;
+    }
+
+    /* Judul history empty */
+    .history-empty h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.5em;
+    }
+
+    /* Paragraf history empty */
+    .history-empty p {
+      margin: 0 0 20px 0;
+      color: #718096;
+    }
+
+    /* Dark mode untuk paragraf history empty */
+    .dark-mode .history-empty p {
+      color: #718096;
+    }
+
+    /* Statistik riwayat */
+    .history-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    /* Kartu statistik */
+    .stat-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 20px;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      text-align: center;
+    }
+
+    /* Dark mode untuk stat card */
+    .dark-mode .stat-card {
+      background-color: var(--card-bg-dark);
+      box-shadow: var(--shadow-dark);
+    }
+
+    /* Nilai statistik */
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    /* Dark mode untuk stat value */
+    .dark-mode .stat-value {
+      color: var(--accent-color);
+    }
+
+    /* Label statistik */
+    .stat-label {
+      font-size: 1rem;
+      color: #718096;
+    }
+
+    /* Dark mode untuk stat label */
+    .dark-mode .stat-label {
+      color: #A0AEC0;
+    }
+
+    /* Tanggal selesai */
+    .completed-date {
+      font-size: 0.9em;
+      color: #718096;
+      margin-top: 5px;
+    }
+
+    /* Dark mode untuk completed date */
+    .dark-mode .completed-date {
+      color: #A0AEC0;
+    }
+
+    /* Responsif untuk layar kecil (max-width: 768px) */
+    @media (max-width: 768px) {
+      /* Toolbar menjadi kolom */
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      /* Kotak pencarian penuh lebar */
+      .search-box {
+        max-width: none;
+      }
+      
+      /* Tampilan grid menjadi 1 kolom */
+      .task-list.grid-view {
+        grid-template-columns: 1fr;
+      }
+      
+      /* Toolbar kiri dan kanan penuh lebar */
+      .left-tools, .right-tools {
+        justify-content: space-between;
+        width: 100%;
+      }
+      
+      /* Footer menjadi kolom */
+      footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      /* Anggota tim dan kontak menjadi kolom */
+      .team-members, .contact-list li {
+        flex-direction: column;
+      }
+
+      /* Responsif homepage */
+      .welcome-content {
+        padding: 30px 20px;
+      }
+
+      .welcome-content h1 {
+        font-size: 2rem;
+      }
+
+      .welcome-content p {
+        font-size: 1rem;
+      }
+
+      /* Tombol welcome menjadi kolom */
+      .welcome-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .welcome-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Responsif section riwayat */
+      .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .history-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .stat-card {
+        min-width: 100%;
+      }
+    }
+
+    /* Animasi fade in */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Animasi slide in */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Animasi pulse (berdenyut) */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Kelas untuk animasi pulse */
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header dengan navigasi -->
+  <header>
+    <h1><i class="fas fa-tasks"></i> Countdown Tugas</h1>
+    <nav>
+      <a href="#" id="homeLink" class="active"><i class="fas fa-home"></i> Beranda</a>
+      <a href="#tentang" id="aboutLink"><i class="fas fa-info-circle"></i> Tentang</a>
+      <a href="#kontak" id="contactLink"><i class="fas fa-envelope"></i> Kontak</a>
+    </nav>
+  </header>
+
+  <!-- Section homepage -->
+  <section class="homepage" id="homepage">
+    <div class="welcome-content">
+      <h1>Selamat Datang</h1>
+      <p>Kelola deadline tugas kuliah Anda dengan mudah dan efektif. Aplikasi ini membantu Anda memantau tugas-tugas yang harus diselesaikan dengan fitur countdown.</p>
+      <div class="welcome-buttons">
+        <a href="#mainContent" class="welcome-btn tasks" id="taskListBtn">
+          <i class="fas fa-tasks"></i> List Tugas
+        </a>
+        <a href="#historyContent" class="welcome-btn history" id="taskHistoryBtn">
+          <i class="fas fa-history"></i> Riwayat Tugas
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Konten utama (tersembunyi secara default) -->
+  <div class="container" id="mainContent" style="display: none;">
+    <div class="toolbar">
+      <div class="left-tools">
+        <!-- Tombol tambah tugas -->
+        <button class="btn" onclick="openAddTaskModal()">
+          <i class="fas fa-plus"></i> Tambah Tugas
+        </button>
+        <!-- Kotak pencarian -->
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Cari tugas..." oninput="filterTasks()">
+        </div>
+      </div>
+      <div class="right-tools">
+        <!-- Dropdown sorting -->
+        <div class="sort-selector">
+          <select id="sortBy" onchange="filterTasks()">
+            <option value="deadline">Urutkan: Deadline</option>
+            <option value="name">Urutkan: Nama</option>
+            <option value="course">Urutkan: Mata Kuliah</option>
+          </select>
+        </div>
+        <!-- Tombol toggle tampilan -->
+        <button class="btn btn-view btn-round" id="viewToggleBtn" onclick="toggleView()">
+          <i class="fas fa-th-large"></i>
+        </button>
+        <!-- Tombol toggle dark mode -->
+        <button class="btn theme-toggle btn-round" onclick="toggleDarkMode()">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Daftar tugas -->
+    <div class="task-list" id="taskList"></div>
+  </div>
+
+  <!-- Section riwayat tugas -->
+  <div class="history-section" id="historyContent" style="display: none;">
+    <div class="history-header">
+      <h1 class="history-title"><i class="fas fa-history"></i> Riwayat Tugas</h1>
+      <div class="history-controls">
+        <!-- Tombol hapus riwayat -->
+        <button class="btn" onclick="clearCompletedTasks()">
+          <i class="fas fa-trash"></i> Hapus Riwayat
+        </button>
+        <!-- Tombol kembali -->
+        <button class="btn" onclick="showMainContent()">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+      </div>
+    </div>
+
+    <!-- Statistik riwayat -->
+    <div class="history-stats" id="historyStats">
+      <!-- Statistik akan diisi oleh JavaScript -->
+    </div>
+
+    <!-- Daftar riwayat tugas -->
+    <div class="task-list" id="historyList"></div>
+  </div>
+
+  <!-- Section tentang -->
+  <div class="about-section" id="aboutSection" style="display: none;">
+    <h2><i class="fas fa-info-circle"></i> Tentang Aplikasi Countdown Tugas</h2>
+    
+    <p>Aplikasi ini dikembangkan sebagai proyek akhir semester untuk mata kuliah Pemrograman Web. Tujuan utama aplikasi ini adalah membantu mahasiswa dalam mengelola dan memantau deadline tugas-tugas kuliah mereka secara lebih efektif.</p>
+    
+    <h3>Fitur Utama:</h3>
+    <ul>
+      <li><strong>Manajemen Tugas:</strong> Tambah, edit, dan hapus tugas dengan informasi lengkap termasuk mata kuliah, judul, deskripsi, dan deadline</li>
+      <li><strong>Countdown Otomatis:</strong> Menampilkan waktu tersisa hingga deadline dengan warna yang berubah sesuai urgensi</li>
+      <li><strong>Progress Bar Visual:</strong> Grafik visual yang menunjukkan progres waktu menuju deadline</li>
+      <li><strong>Kategori Tugas:</strong> Klasifikasi tugas berdasarkan jenis (Akademik, Proyek, Ujian, Lainnya)</li>
+      <li><strong>Tampilan Fleksibel:</strong> Pilihan tampilan grid atau list sesuai preferensi pengguna</li>
+      <li><strong>Mode Gelap/Terang:</strong> Dukungan tampilan yang nyaman di berbagai kondisi pencahayaan</li>
+      <li><strong>Penyimpanan Lokal:</strong> Data tugas disimpan di browser pengguna sehingga tidak hilang saat halaman dimuat ulang</li>
+    </ul>
+    
+    <h3>Tujuan Pembuatan:</h3>
+    <ol>
+      <li>Menerapkan konsep-konsep pemrograman web yang telah dipelajari selama semester</li>
+      <li>Menciptakan solusi nyata untuk masalah manajemen waktu yang dihadapi mahasiswa</li>
+      <li>Mengintegrasikan berbagai teknologi web (HTML5, CSS3, JavaScript) dalam satu aplikasi fungsional</li>
+      <li>Memberikan pengalaman praktik langsung dalam pengembangan aplikasi web modern</li>
+    </ol>
+    
+    <div class="team-members">
+      <!-- Informasi tim pengembang -->
+      <div class="team-member">
+        <h4><i class="fas fa-users"></i> Kelompok 7</h4>
+        <p>Anggota Kelompok:</p>
+        <ul>
+          <li>Raffi Putra Nugraha (245150700111004)</li>
+          <li>Hadijaya Bayu Mustikoaji (245150707111011)</li>
+          <li>Samuel Christopher Tandayu (245150707111001)</li>
+        </ul>
+      </div>
+      
+      <!-- Informasi mata kuliah -->
+      <div class="team-member">
+        <h4><i class="fas fa-book"></i> Informasi Kuliah</h4>
+        <p><strong>Mata Kuliah:</strong> Dasar Desain Antarmuka Pengguna</p>
+        <p><strong>Dosen Pengampu:</strong> Buce Trias Hanggara</p>
+        <p><strong>Semester:</strong> Genap 2024/2025</p>
+      </div>
+    </div>
+    
+    <!-- Tombol kembali -->
+    <a href="#" class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+  </div>
+
+  <!-- Section kontak -->
+  <div class="contact-section" id="contactSection" style="display: none;">
+    <h2><i class="fas fa-envelope"></i> Kontak Kami</h2>
+    
+    <p>Berikut adalah informasi kontak anggota tim pengembang aplikasi ini:</p>
+    
+    <ul class="contact-list">
+      <!-- Daftar kontak anggota tim -->
+      <li>
+        <div class="contact-name">Raffi Putra Nugraha</div>
+        <div class="contact-email">
+          <a href="mailto:anggota1@example.com">raffipn26@student.ub.ac.id</a>
+        </div>
+      </li>
+      <li>
+        <div class="contact-name">Hadijaya Bayu Mustikoaji</div>
+        <div class="contact-email">
+          <a href="mailto:anggota2@example.com">anggota2@example.com</a>
+        </div>
+      </li>
+      <li>
+        <div class="contact-name">Samuel Christopher Tandayu</div>
+        <div class="contact-email">
+          <a href="mailto:anggota3@example.com">anggota3@example.com</a>
+        </div>
+      </li>
+    </ul>
+    
+    <p>Untuk pertanyaan lebih lanjut tentang aplikasi ini, silakan hubungi salah satu anggota tim di atas.</p>
+    
+    <!-- Tombol kembali -->
+    <a href="#" class="back-btn" id="backBtnContact"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+  </div>
+
+  <!-- Modal untuk menambah/mengedit tugas -->
+  <div class="modal" id="taskModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <h2 id="modalTitle">Tambah Tugas Baru</h2>
+      <form id="taskForm">
+        <input type="hidden" id="taskIndex" value="-1">
+        <div class="form-group">
+          <label for="taskCourse">Mata Kuliah</label>
+          <input type="text" id="taskCourse" required placeholder="Masukkan nama mata kuliah">
+        </div>
+        <div class="form-group">
+          <label for="taskTitle">Judul Tugas</label>
+          <input type="text" id="taskTitle" required placeholder="Masukkan judul tugas">
+        </div>
+        <div class="form-group">
+          <label for="taskDesc">Deskripsi</label>
+          <textarea id="taskDesc" rows="3" placeholder="Deskripsi tugas (opsional)"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="taskDeadline">Deadline</label>
+          <input type="datetime-local" id="taskDeadline" required>
+        </div>
+        <div class="form-group">
+          <label for="taskCategory">Kategori</label>
+          <select id="taskCategory">
+            <option value="academic">Akademik</option>
+            <option value="project">Proyek</option>
+            <option value="exam">Ujian</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-danger" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal konfirmasi hapus -->
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <h2>Konfirmasi</h2>
+      <p>Apakah Anda yakin ingin menghapus tugas ini?</p>
+      <input type="hidden" id="deleteTaskIndex">
+      <div class="modal-actions">
+        <button class="btn" onclick="closeConfirmModal()">Batal</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal konfirmasi hapus riwayat -->
+  <div class="modal" id="confirmClearModal">
+    <div class="modal-content">
+      <h2>Konfirmasi</h2>
+      <p>Apakah Anda yakin ingin menghapus semua riwayat tugas yang sudah selesai?</p>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeConfirmClearModal()">Batal</button>
+        <button class="btn btn-danger" onclick="confirmClearHistory()">Hapus Semua</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifikasi -->
+  <div class="notification" id="notification">
+    <div class="notification-icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="notification-message" id="notificationMessage"></div>
+    <button class="notification-close" onclick="closeNotification()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div><strong><i class="fas fa-users"></i> Kelompok 7</strong><br/>Proyek Akhir Semester</div>
+    <div><strong><i class="fas fa-envelope"></i> Prodi:</strong><br/>Dasar Desain Antarmuka Pengguna</div>
+    <div><strong><i class="fas fa-calendar-alt"></i> Tahun:</strong><br/>2025</div>
+  </footer>
+
+  <script>
+    // Menyimpan elemen DOM
+    const taskList = document.getElementById("taskList");
+    const taskForm = document.getElementById("taskForm");
+    const taskModal = document.getElementById("taskModal");
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmClearModal = document.getElementById("confirmClearModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const notification = document.getElementById("notification");
+    const viewToggleBtn = document.getElementById("viewToggleBtn");
+    const themeIcon = document.getElementById("themeIcon");
+    const mainContent = document.getElementById("mainContent");
+    const aboutSection = document.getElementById("aboutSection");
+    const contactSection = document.getElementById("contactSection");
+    const homeLink = document.getElementById("homeLink");
+    const aboutLink = document.getElementById("aboutLink");
+    const contactLink = document.getElementById("contactLink");
+    const backBtn = document.getElementById("backBtn");
+    const backBtnContact = document.getElementById("backBtnContact");
+    const homepage = document.getElementById("homepage");
+    const taskListBtn = document.getElementById("taskListBtn");
+    const taskHistoryBtn = document.getElementById("taskHistoryBtn");
+    const historyContent = document.getElementById("historyContent");
+    const historyList = document.getElementById("historyList");
+    const historyStats = document.getElementById("historyStats");
+
+    // Inisialisasi variabel
+    let isGridView = false;
+    let darkMode = localStorage.getItem("darkMode") === "true";
+
+    // Inisialisasi aplikasi saat DOM siap
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set tanggal sekarang sebagai minimum untuk input deadline
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      document.getElementById("taskDeadline").min = formattedDateTime;
+      
+      // Terapkan dark mode jika diaktifkan
+      if (darkMode) {
+        document.body.classList.add("dark-mode");
+        themeIcon.className = "fas fa-sun";
+      }
+      
+      // Set tampilan grid/list
+      isGridView = localStorage.getItem("gridView") === "true";
+      if (isGridView) {
+        taskList.classList.add("grid-view");
+        viewToggleBtn.innerHTML = "<i class='fas fa-list'></i>";
+      }
+
+      // Muat tugas
+      loadTasks();
+      
+      // Cek tugas yang mendesak
+      checkUrgentTasks();
+
+      // Handler navigasi
+      homeLink.addEventListener("click", function(e) {
+        e.preventDefault();
+        showHomeSection();
+      });
+
+      aboutLink.addEventListener("click", function(e) {
+        e.preventDefault();
+        showAboutSection();
+      });
+
+      contactLink.addEventListener("click", function(e) {
+        e.preventDefault();
+        showContactSection();
+      });
+
+      backBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        showHomeSection();
+      });
+
+      backBtnContact.addEventListener("click", function(e) {
+        e.preventDefault();
+        showHomeSection();
+      });
+
+      taskListBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        showMainContent();
+      });
+
+      taskHistoryBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        showTaskHistory();
+      });
+
+      // Handler submit form
+      taskForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        saveTask();
+      });
+
+      // Handle hash di URL
+      if (window.location.hash === "#tentang") {
+        showAboutSection();
+      } else if (window.location.hash === "#kontak") {
+        showContactSection();
+      } else if (window.location.hash === "#mainContent") {
+        showMainContent();
+      } else if (window.location.hash === "#historyContent") {
+        showTaskHistory();
+      }
+    });
+
+    // Fungsi untuk menampilkan halaman beranda
+    function showHomeSection() {
+      homepage.style.display = "flex";
+      mainContent.style.display = "none";
+      aboutSection.style.display = "none";
+      contactSection.style.display = "none";
+      historyContent.style.display = "none";
+      window.scrollTo(0, 0);
+      window.location.hash = "";
+      
+      // Update link navigasi aktif
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      homeLink.classList.add('active');
+    }
+
+    // Fungsi untuk menampilkan konten utama
+    function showMainContent() {
+      homepage.style.display = "none";
+      mainContent.style.display = "block";
+      aboutSection.style.display = "none";
+      contactSection.style.display = "none";
+      historyContent.style.display = "none";
+      window.scrollTo(0, 0);
+      window.location.hash = "mainContent";
+      
+      // Update link navigasi aktif
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+    }
+
+    // Fungsi untuk menampilkan riwayat tugas
+    function showTaskHistory() {
+      homepage.style.display = "none";
+      mainContent.style.display = "none";
+      aboutSection.style.display = "none";
+      contactSection.style.display = "none";
+      historyContent.style.display = "block";
+      window.scrollTo(0, 0);
+      window.location.hash = "historyContent";
+      
+      // Update link navigasi aktif
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Muat tugas yang sudah selesai
+      loadCompletedTasks();
+    }
+
+    // Fungsi untuk menampilkan section tentang
+    function showAboutSection() {
+      homepage.style.display = "none";
+      mainContent.style.display = "none";
+      aboutSection.style.display = "block";
+      contactSection.style.display = "none";
+      historyContent.style.display = "none";
+      window.scrollTo(0, 0);
+      window.location.hash = "tentang";
+      
+      // Update link navigasi aktif
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      aboutLink.classList.add('active');
+    }
+
+    // Fungsi untuk menampilkan section kontak
+    function showContactSection() {
+      homepage.style.display = "none";
+      mainContent.style.display = "none";
+      aboutSection.style.display = "none";
+      contactSection.style.display = "block";
+      historyContent.style.display = "none";
+      window.scrollTo(0, 0);
+      window.location.hash = "kontak";
+      
+      // Update link navigasi aktif
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      contactLink.classList.add('active');
+    }
+
+    // Fungsi untuk memuat tugas yang sudah selesai
+    function loadCompletedTasks() {
+      const tasks = getTasksFromStorage();
+      const completedTasks = tasks.filter(task => task.completed);
+      
+      // Kosongkan daftar riwayat
+      historyList.innerHTML = "";
+      
+      // Update statistik
+      updateHistoryStats(completedTasks);
+      
+      // Cek jika tidak ada tugas selesai
+      if (completedTasks.length === 0) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "history-empty";
+        emptyState.innerHTML = `
+          <i class="fas fa-check-circle"></i>
+          <h3>Tidak ada riwayat tugas</h3>
+          <p>Belum ada tugas yang diselesaikan. Selesaikan beberapa tugas untuk melihat riwayat di sini.</p>
+        `;
+        historyList.appendChild(emptyState);
+        return;
+      }
+      
+      // Urutkan berdasarkan tanggal selesai (terbaru dulu)
+      completedTasks.sort((a, b) => {
+        if (a.completedAt && b.completedAt) {
+          return new Date(b.completedAt) - new Date(a.completedAt);
+        }
+        return 0;
+      });
+      
+      // Tampilkan tugas yang sudah selesai
+      completedTasks.forEach((task, index) => {
+        createHistoryCard(task, index);
+      });
+    }
+    
+    // Fungsi untuk memperbarui statistik riwayat
+    function updateHistoryStats(completedTasks) {
+      // Kosongkan statistik yang ada
+      historyStats.innerHTML = "";
+      
+      // Total tugas selesai
+      const totalCard = document.createElement("div");
+      totalCard.className = "stat-card";
+      totalCard.innerHTML = `
+        <div class="stat-value">${completedTasks.length}</div>
+        <div class="stat-label">Total Tugas Selesai</div>
+      `;
+      historyStats.appendChild(totalCard);
+      
+      // Tugas selesai berdasarkan kategori
+      const categories = {
+        academic: { name: "Akademik", count: 0, icon: "fas fa-book" },
+        project: { name: "Proyek", count: 0, icon: "fas fa-project-diagram" },
+        exam: { name: "Ujian", count: 0, icon: "fas fa-pen-alt" },
+        other: { name: "Lainnya", count: 0, icon: "fas fa-sticky-note" }
+      };
+      
+      completedTasks.forEach(task => {
+        if (categories[task.category]) {
+          categories[task.category].count++;
+        }
+      });
+      
+      // Buat kartu untuk setiap kategori
+      for (const [key, category] of Object.entries(categories)) {
+        const card = document.createElement("div");
+        card.className = "stat-card";
+        card.innerHTML = `
+          <div class="stat-value">${category.count}</div>
+          <div class="stat-label">${category.name}</div>
+          <i class="${category.icon}"></i>
+        `;
+        historyStats.appendChild(card);
+      }
+    }
+    
+    // Fungsi untuk membuat kartu riwayat
+    function createHistoryCard(task, index) {
+      const card = document.createElement("div");
+      card.className = "task-card";
+      
+      // Set warna border berdasarkan kategori
+      if (task.category === "exam") {
+        card.style.borderLeftColor = "var(--danger-color)";
+      } else if (task.category === "project") {
+        card.style.borderLeftColor = "var(--warning-color)";
+      } else {
+        card.style.borderLeftColor = "var(--accent-color)";
+      }
+      
+      // Set opacity untuk tugas selesai
+      card.style.opacity = "0.7";
+
+      // Badge status
+      const status = document.createElement("div");
+      status.className = "countdown";
+      status.style.backgroundColor = "var(--info-color)";
+      status.textContent = "Selesai";
+      card.appendChild(status);
+
+      // Nama mata kuliah
+      if (task.course) {
+        const courseName = document.createElement("div");
+        courseName.className = "course-name";
+        courseName.textContent = task.course;
+        card.appendChild(courseName);
+      }
+
+      // Judul tugas
+      const title = document.createElement("h3");
+      title.textContent = task.title;
+      title.style.textDecoration = "line-through";
+      card.appendChild(title);
+
+      // Detail tugas
+      const details = document.createElement("div");
+      details.className = "task-details";
+      
+      // Tambahkan deskripsi jika ada
+      if (task.description && task.description.trim() !== "") {
+        const desc = document.createElement("p");
+        desc.textContent = task.description;
+        details.appendChild(desc);
+      }
+      
+      // Metadata tugas
+      const categoryMeta = document.createElement("div");
+      categoryMeta.className = "task-meta";
+      
+      const categoryIcon = getCategoryIcon(task.category);
+      categoryMeta.innerHTML = `<i class="${categoryIcon}"></i> ${getCategoryName(task.category)}`;
+      details.appendChild(categoryMeta);
+
+      // Info deadline
+      const deadlineMeta = document.createElement("div");
+      deadlineMeta.className = "task-meta";
+      
+      const deadlineDate = new Date(task.deadline);
+      const formattedDate = deadlineDate.toLocaleDateString('id-ID', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      deadlineMeta.innerHTML = `<i class="fas fa-calendar-alt"></i> ${formattedDate}`;
+      details.appendChild(deadlineMeta);
+      
+      // Tanggal selesai
+      if (task.completedAt) {
+        const completedDate = new Date(task.completedAt);
+        const completedFormatted = completedDate.toLocaleDateString('id-ID', { 
+          weekday: 'long', 
+          day: 'numeric', 
+          month: 'long', 
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        const completedMeta = document.createElement("div");
+        completedMeta.className = "completed-date";
+        completedMeta.innerHTML = `<i class="fas fa-check-circle"></i> Diselesaikan: ${completedFormatted}`;
+        details.appendChild(completedMeta);
+      }
+      
+      card.appendChild(details);
+
+      // Aksi tugas (hanya hapus untuk riwayat)
+      const actions = document.createElement("div");
+      actions.className = "task-actions";
+      
+      // Tombol hapus
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-btn task-btn-delete";
+      deleteBtn.innerHTML = `<i class="fas fa-trash"></i> Hapus`;
+      deleteBtn.onclick = () => openConfirmModal(index);
+      actions.appendChild(deleteBtn);
+      
+      card.appendChild(actions);
+      
+      historyList.appendChild(card);
+    }
+    
+    // Fungsi untuk menghapus riwayat tugas
+    function clearCompletedTasks() {
+      openConfirmClearModal();
+    }
+    
+    // Fungsi untuk membuka modal konfirmasi hapus riwayat
+    function openConfirmClearModal() {
+      confirmClearModal.classList.add("active");
+    }
+    
+    // Fungsi untuk menutup modal konfirmasi hapus riwayat
+    function closeConfirmClearModal() {
+      confirmClearModal.classList.remove("active");
+    }
+    
+    // Fungsi untuk mengonfirmasi hapus riwayat
+    function confirmClearHistory() {
+      const tasks = getTasksFromStorage();
+      const incompleteTasks = tasks.filter(task => !task.completed);
+      saveTasksToStorage(incompleteTasks);
+      loadCompletedTasks();
+      closeConfirmClearModal();
+      showNotification("Semua riwayat tugas berhasil dihapus!", "success");
+    }
+
+    // Fungsi untuk membuka modal tambah tugas
+    function openAddTaskModal() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
+      document.getElementById("taskIndex").value = -1;
+      document.getElementById("taskCourse").value = "";
+      document.getElementById("taskTitle").value = "";
+      document.getElementById("taskDesc").value = "";
+      document.getElementById("taskDeadline").value = formattedDateTime;
+      document.getElementById("taskCategory").value = "academic";
+      
+      modalTitle.textContent = "Tambah Tugas Baru";
+      openModal();
+    }
+
+    // Fungsi untuk membuka modal edit tugas
+    function openEditTaskModal(index) {
+      const tasks = getTasksFromStorage();
+      const task = tasks[index];
+      
+      document.getElementById("taskIndex").value = index;
+      document.getElementById("taskCourse").value = task.course || "";
+      document.getElementById("taskTitle").value = task.title;
+      document.getElementById("taskDesc").value = task.description || "";
+      
+      // Format deadline untuk input datetime-local
+      const deadline = new Date(task.deadline);
+      const year = deadline.getFullYear();
+      const month = String(deadline.getMonth() + 1).padStart(2, '0');
+      const day = String(deadline.getDate()).padStart(2, '0');
+      const hours = String(deadline.getHours()).padStart(2, '0');
+      const minutes = String(deadline.getMinutes()).padStart(2, '0');
+      const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
+      document.getElementById("taskDeadline").value = formattedDateTime;
+      document.getElementById("taskCategory").value = task.category || "academic";
+      
+      modalTitle.textContent = "Edit Tugas";
+      openModal();
+    }
+
+    // Fungsi untuk membuka modal
+    function openModal() {
+      taskModal.classList.add("active");
+      document.getElementById("taskCourse").focus();
+    }
+
+    // Fungsi untuk menutup modal
+    function closeModal() {
+      taskModal.classList.remove("active");
+    }
+
+    // Fungsi untuk membuka modal konfirmasi
+    function openConfirmModal(index) {
+      document.getElementById("deleteTaskIndex").value = index;
+      confirmModal.classList.add("active");
+    }
+
+    // Fungsi untuk menutup modal konfirmasi
+    function closeConfirmModal() {
+      confirmModal.classList.remove("active");
+    }
+
+    // Fungsi untuk mengonfirmasi penghapusan
+    function confirmDelete() {
+      const index = document.getElementById("deleteTaskIndex").value;
+      deleteTask(index);
+      closeConfirmModal();
+    }
+
+    // Fungsi untuk menyimpan tugas
+    function saveTask() {
+      const index = parseInt(document.getElementById("taskIndex").value);
+      const course = document.getElementById("taskCourse").value.trim();
+      const title = document.getElementById("taskTitle").value.trim();
+      const description = document.getElementById("taskDesc").value.trim();
+      const deadlineStr = document.getElementById("taskDeadline").value;
+      const category = document.getElementById("taskCategory").value;
+      
+      if (!course || !title || !deadlineStr) {
+        showNotification("Mata kuliah, judul dan deadline harus diisi!", "error");
+        return;
+      }
+      
+      try {
+        const deadline = new Date(deadlineStr).toISOString();
+        const newTask = { 
+          course,
+          title, 
+          description, 
+          deadline, 
+          category,
+          completed: false,
+          createdAt: new Date().toISOString()
+        };
+        
+        const tasks = getTasksFromStorage();
+        
+        if (index === -1) {
+          // Tambah tugas baru
+          tasks.push(newTask);
+          showNotification("Tugas berhasil ditambahkan!", "success");
+        } else {
+          // Update tugas yang ada
+          newTask.createdAt = tasks[index].createdAt; // Pertahankan tanggal pembuatan
+          newTask.completed = tasks[index].completed; // Pertahankan status selesai
+          newTask.completedAt = tasks[index].completedAt; // Pertahankan tanggal selesai
+          tasks[index] = newTask;
+          showNotification("Tugas berhasil diperbarui!", "success");
+        }
+        
+        saveTasksToStorage(tasks);
+        loadTasks();
+        closeModal();
+      } catch (error) {
+        showNotification("Format tanggal tidak valid!", "error");
+      }
+    }
+
+    // Fungsi untuk menghapus tugas
+    function deleteTask(index) {
+      const tasks = getTasksFromStorage();
+      tasks.splice(index, 1);
+      saveTasksToStorage(tasks);
+      loadTasks();
+      
+      // Jika dalam tampilan riwayat, muat ulang juga
+      if (historyContent.style.display === "block") {
+        loadCompletedTasks();
+      }
+      
+      showNotification("Tugas berhasil dihapus!", "info");
+    }
+
+    // Fungsi untuk toggle status selesai tugas
+    function toggleTaskCompletion(index) {
+      const tasks = getTasksFromStorage();
+      tasks[index].completed = !tasks[index].completed;
+      
+      // Set tanggal selesai jika ditandai sebagai selesai
+      if (tasks[index].completed && !tasks[index].completedAt) {
+        tasks[index].completedAt = new Date().toISOString();
+      }
+      
+      saveTasksToStorage(tasks);
+      loadTasks();
+      
+      const status = tasks[index].completed ? "diselesaikan" : "dibuka kembali";
+      showNotification(`Tugas telah ${status}!`, "success");
+    }
+
+    // Fungsi untuk mendapatkan tugas dari localStorage
+    function getTasksFromStorage() {
+      return JSON.parse(localStorage.getItem("tasks")) || [];
+    }
+
+    // Fungsi untuk menyimpan tugas ke localStorage
+    function saveTasksToStorage(tasks) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      
+      // Backup otomatis ke sessionStorage
+      sessionStorage.setItem("tasks_backup", JSON.stringify(tasks));
+    }
+
+    // Fungsi untuk memfilter tugas
+    function filterTasks() {
+      loadTasks();
+    }
+
+    // Fungsi untuk memuat tugas
+    function loadTasks() {
+      const tasks = getTasksFromStorage();
+      const searchInput = document.getElementById("searchInput").value.toLowerCase();
+      const sortBy = document.getElementById("sortBy").value;
+      
+      // Filter tugas
+      let filteredTasks = tasks.filter(task => {
+        // Filter berdasarkan pencarian
+        const matchesSearch = task.title.toLowerCase().includes(searchInput) || 
+                             (task.description && task.description.toLowerCase().includes(searchInput)) ||
+                             (task.course && task.course.toLowerCase().includes(searchInput));
+        
+        return matchesSearch && !task.completed;
+      });
+      
+      // Urutkan tugas
+      filteredTasks.sort((a, b) => {
+        if (sortBy === "deadline") {
+          return new Date(a.deadline) - new Date(b.deadline);
+        } else if (sortBy === "name") {
+          return a.title.localeCompare(b.title);
+        } else if (sortBy === "course") {
+          return (a.course || "").localeCompare(b.course || "");
+        }
+        return 0;
+      });
+      
+      // Kosongkan daftar tugas
+      taskList.innerHTML = "";
+      
+      // Cek jika tidak ada tugas
+      if (filteredTasks.length === 0) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "empty-state";
+        emptyState.innerHTML = `
+          <i class="fas fa-clipboard-list"></i>
+          <h3>Tidak ada tugas</h3>
+          <p>${tasks.length === 0 ? 'Tambahkan tugas baru untuk memulai.' : 'Tidak ditemukan tugas yang sesuai dengan filter saat ini.'}</p>
+          <button class="btn" onclick="openAddTaskModal()">
+            <i class="fas fa-plus"></i> Tambah Tugas Baru
+          </button>
+        `;
+        taskList.appendChild(emptyState);
+        return;
+      }
+      
+      // Tampilkan tugas yang difilter
+      filteredTasks.forEach((task, index) => {
+        const taskIndex = tasks.indexOf(task); // Dapatkan index sebenarnya di array asli
+        createTaskCard(task, taskIndex);
+      });
+    }
+    
+    // Fungsi untuk membuat kartu tugas
+    function createTaskCard(task, index) {
+      const card = document.createElement("div");
+      card.className = "task-card";
+      
+      // Set warna border berdasarkan kategori
+      if (task.category === "exam") {
+        card.style.borderLeftColor = "var(--danger-color)";
+      } else if (task.category === "project") {
+        card.style.borderLeftColor = "var(--warning-color)";
+      } else {
+        card.style.borderLeftColor = "var(--accent-color)";
+      }
+      
+      // Set opacity untuk tugas selesai
+      if (task.completed) {
+        card.style.opacity = "0.7";
+      }
+
+      // Buat elemen countdown
+      const countdown = document.createElement("div");
+      countdown.className = "countdown";
+      countdown.id = `countdown-${index}`;
+      card.appendChild(countdown);
+
+      // Nama mata kuliah
+      if (task.course) {
+        const courseName = document.createElement("div");
+        courseName.className = "course-name";
+        courseName.textContent = task.course;
+        card.appendChild(courseName);
+      }
+
+      // Judul tugas
+      const title = document.createElement("h3");
+      title.textContent = task.title;
+      if (task.completed) {
+        title.style.textDecoration = "line-through";
+      }
+      card.appendChild(title);
+
+      // Detail tugas
+      const details = document.createElement("div");
+      details.className = "task-details";
+      
+      // Tambahkan deskripsi jika ada
+      if (task.description && task.description.trim() !== "") {
+        const desc = document.createElement("p");
+        desc.textContent = task.description;
+        details.appendChild(desc);
+      }
+      
+      // Buat progress bar
+      const progressContainer = document.createElement("div");
+      progressContainer.className = "progress-container";
+      
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar";
+      progressContainer.appendChild(progressBar);
+      details.appendChild(progressContainer);
+      
+      // Update lebar progress bar berdasarkan waktu tersisa
+      updateProgressBar(progressBar, task.deadline, task.completed);
+      
+      // Metadata tugas
+      const categoryMeta = document.createElement("div");
+      categoryMeta.className = "task-meta";
+      
+      const categoryIcon = getCategoryIcon(task.category);
+      categoryMeta.innerHTML = `<i class="${categoryIcon}"></i> ${getCategoryName(task.category)}`;
+      details.appendChild(categoryMeta);
+
+      // Info deadline
+      const deadlineMeta = document.createElement("div");
+      deadlineMeta.className = "task-meta";
+      
+      const deadlineDate = new Date(task.deadline);
+      const formattedDate = deadlineDate.toLocaleDateString('id-ID', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      deadlineMeta.innerHTML = `<i class="fas fa-calendar-alt"></i> ${formattedDate}`;
+      details.appendChild(deadlineMeta);
+      
+      card.appendChild(details);
+
+      // Aksi tugas
+      const actions = document.createElement("div");
+      actions.className = "task-actions";
+      
+      // Tombol selesai/belum selesai
+      const completeBtn = document.createElement("button");
+      completeBtn.className = "task-btn task-btn-complete";
+      completeBtn.innerHTML = task.completed ? 
+        `<i class="fas fa-redo"></i> Buka Kembali` : 
+        `<i class="fas fa-check"></i> Selesaikan`;
+      completeBtn.onclick = () => toggleTaskCompletion(index);
+      actions.appendChild(completeBtn);
+      
+      // Tombol edit
+      const editBtn = document.createElement("button");
+      editBtn.className = "task-btn task-btn-edit";
+      editBtn.innerHTML = `<i class="fas fa-edit"></i> Edit`;
+      editBtn.onclick = () => openEditTaskModal(index);
+      actions.appendChild(editBtn);
+      
+      // Tombol hapus
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-btn task-btn-delete";
+      deleteBtn.innerHTML = `<i class="fas fa-trash"></i> Hapus`;
+      deleteBtn.onclick = () => openConfirmModal(index);
+      actions.appendChild(deleteBtn);
+      
+      card.appendChild(actions);
+      
+      taskList.appendChild(card);
+      
+      // Mulai countdown
+      updateCountdown(index, task.deadline, task.completed);
+    }
+    
+    // Fungsi untuk memperbarui progress bar
+    function updateProgressBar(progressBar, deadlineStr, completed) {
+      const deadline = new Date(deadlineStr).getTime();
+      const now = new Date().getTime();
+      const diff = deadline - now;
+      
+      if (completed) {
+        progressBar.style.width = "100%";
+        progressBar.style.backgroundColor = "var(--info-color)";
+        return;
+      }
+
+      if (diff <= 0) {
+        progressBar.style.width = "100%";
+        progressBar.style.backgroundColor = "var(--danger-color)";
+        return;
+      }
+
+      // Hitung persentase waktu tersisa (dari pembuatan ke deadline)
+      // Untuk ini kita butuh waktu pembuatan, yang diasumsikan disimpan di objek tugas
+      // Karena kita tidak memilikinya di versi sederhana ini, kita akan menggunakan periode tetap (7 hari) untuk demo
+      const totalPeriod = 7 * 24 * 60 * 60 * 1000; // 7 hari dalam milidetik
+      const elapsed = Math.max(0, now - (deadline - totalPeriod));
+      const percentage = Math.min(100, (elapsed / totalPeriod) * 100);
+      
+      progressBar.style.width = `${percentage}%`;
+    }
+    
+    // Fungsi untuk mendapatkan ikon kategori
+    function getCategoryIcon(category) {
+      switch(category) {
+        case "academic": return "fas fa-book";
+        case "project": return "fas fa-project-diagram";
+        case "exam": return "fas fa-pen-alt";
+        default: return "fas fa-sticky-note";
+      }
+    }
+    
+    // Fungsi untuk mendapatkan nama kategori
+    function getCategoryName(category) {
+      switch(category) {
+        case "academic": return "Akademik";
+        case "project": return "Proyek";
+        case "exam": return "Ujian";
+        default: return "Lainnya";
+      }
+    }
+    
+    // Fungsi untuk memperbarui countdown
+    function updateCountdown(index, deadlineStr, completed) {
+      const countdownEl = document.getElementById("countdown-" + index);
+      if (!countdownEl) return; // Elemen tidak ditemukan
+      
+      const deadline = new Date(deadlineStr).getTime();
+      
+      // Fungsi untuk memperbarui countdown
+      const updateTimer = () => {
+        const now = new Date().getTime();
+        const diff = deadline - now;
+        
+        if (completed) {
+          countdownEl.textContent = "Selesai";
+          countdownEl.style.backgroundColor = "var(--info-color)";
+          return;
+        }
+
+        if (diff <= 0) {
+          countdownEl.textContent = "Terlambat!";
+          countdownEl.style.backgroundColor = "var(--danger-color)";
+          countdownEl.classList.add("pulse");
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.textContent = days > 0 ? 
+          `${days}h ${hours}j` : 
+          `${hours}j ${minutes}m ${seconds}d`;
+
+        // Ubah warna berdasarkan waktu tersisa
+        if (days <= 1) {
+          countdownEl.style.backgroundColor = "var(--danger-color)";
+        } else if (days <= 3) {
+          countdownEl.style.backgroundColor = "var(--warning-color)";
+        } else if (days <= 7) {
+          countdownEl.style.backgroundColor = "var(--info-color)";
+        } else {
+          countdownEl.style.backgroundColor = "var(--accent-color)";
+        }
+      };
+      
+      // Perbarui segera
+      updateTimer();
+      
+      // Perbarui setiap detik
+      const intervalId = setInterval(updateTimer, 1000);
+      
+      // Simpan ID interval untuk membersihkannya saat diperlukan
+      countdownEl.dataset.intervalId = intervalId;
+      
+      // Bersihkan interval saat komponen dihapus
+      return () => clearInterval(intervalId);
+    }
+    
+    // Fungsi untuk toggle tampilan grid/list
+    function toggleView() {
+      isGridView = !isGridView;
+      localStorage.setItem("gridView", isGridView);
+      
+      if (isGridView) {
+        taskList.classList.add("grid-view");
+        viewToggleBtn.innerHTML = "<i class='fas fa-list'></i>";
+      } else {
+        taskList.classList.remove("grid-view");
+        viewToggleBtn.innerHTML = "<i class='fas fa-th-large'></i>";
+      }
+    }
+    
+    // Fungsi untuk toggle dark mode
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      localStorage.setItem("darkMode", darkMode);
+      
+      if (darkMode) {
+        document.body.classList.add("dark-mode");
+        themeIcon.className = "fas fa-sun";
+      } else {
+        document.body.classList.remove("dark-mode");
+        themeIcon.className = "fas fa-moon";
+      }
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = "info") {
+      const notificationEl = document.getElementById("notification");
+      const messageEl = document.getElementById("notificationMessage");
+      const iconEl = notificationEl.querySelector(".notification-icon i");
+      
+      // Set pesan
+      messageEl.textContent = message;
+      
+      // Hapus semua kelas type
+      notificationEl.classList.remove("notification-success", "notification-error", "notification-info");
+      
+      // Set ikon dan type
+      if (type === "success") {
+        iconEl.className = "fas fa-check-circle";
+        notificationEl.classList.add("notification-success");
+      } else if (type === "error") {
+        iconEl.className = "fas fa-exclamation-circle";
+        notificationEl.classList.add("notification-error");
+      } else {
+        iconEl.className = "fas fa-info-circle";
+        notificationEl.classList.add("notification-info");
+      }
+      
+      // Tampilkan notifikasi
+      notificationEl.classList.add("show");
+      
+      // Sembunyikan otomatis setelah 3 detik
+      setTimeout(() => {
+        closeNotification();
+      }, 3000);
+    }
+    
+    // Fungsi untuk menutup notifikasi
+    function closeNotification() {
+      const notificationEl = document.getElementById("notification");
+      notificationEl.classList.remove("show");
+    }
+    
+    // Fungsi untuk memeriksa tugas yang mendesak
+    function checkUrgentTasks() {
+      const tasks = getTasksFromStorage();
+      const now = new Date().getTime();
+      
+      // Cari tugas mendesak (kurang dari 24 jam)
+      const urgentTasks = tasks.filter(task => {
+        if (task.completed) return false;
+        
+        const deadline = new Date(task.deadline).getTime();
+        const diff = deadline - now;
+        const hoursLeft = diff / (1000 * 60 * 60);
+        
+        return hoursLeft > 0 && hoursLeft < 24;
+      });
+      
+      if (urgentTasks.length > 0) {
+        // Tampilkan notifikasi untuk tugas mendesak
+        const message = urgentTasks.length === 1 ? 
+          `Tugas "${urgentTasks[0].title}" akan berakhir dalam kurang dari 24 jam!` :
+          `${urgentTasks.length} tugas akan berakhir dalam kurang dari 24 jam!`;
+          
+        showNotification(message, "warning");
+      }
+      
+      // Periksa lagi setelah satu jam
+      setTimeout(checkUrgentTasks, 60 * 60 * 1000);
+    }
+    
+    // Untuk pemulihan data jika localStorage rusak
+    function recoverData() {
+      const backup = sessionStorage.getItem("tasks_backup");
+      if (backup) {
+        localStorage.setItem("tasks", backup);
+        loadTasks();
+        showNotification("Data berhasil dipulihkan dari backup!", "success");
+      } else {
+        showNotification("Tidak ada backup data yang tersedia.", "error");
+      }
+    }
+    
+    // Untuk ekspor data
+    function exportTasks() {
+      const tasks = getTasksFromStorage();
+      const dataStr = JSON.stringify(tasks, null, 2);
+      const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+      
+      const exportFileDefaultName = "tugas_countdown_" + new Date().toISOString().slice(0, 10) + ".json";
+      
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileDefaultName);
+      linkElement.click();
+      
+      showNotification("Data berhasil diekspor!", "success");
+    }
+    
+    // Untuk impor data
+    function importTasks() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".json";
+      
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = event => {
+          try {
+            const data = JSON.parse(event.target.result);
+            if (Array.isArray(data)) {
+              localStorage.setItem("tasks", JSON.stringify(data));
+              loadTasks();
+              showNotification("Data berhasil diimpor!", "success");
+            } else {
+              throw new Error("Format data tidak valid.");
+            }
+          } catch (error) {
+            showNotification("Gagal mengimpor data: " + error.message, "error");
+          }
+        };
+        reader.readAsText(file);
+      };
+      
+      input.click();
+    }
+  </script>
+</body>
+</html>
