@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Countdown Tugas Mahasiswa</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  
+  <!-- Link ke file CSS eksternal -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header dengan navigasi -->
+  <header>
+    <h1><i class="fas fa-tasks"></i> Countdown Tugas</h1>
+    <nav>
+      <a href="#" id="homeLink" class="active"><i class="fas fa-home"></i> Beranda</a>
+      <a href="#tentang" id="aboutLink"><i class="fas fa-info-circle"></i> Tentang</a>
+      <a href="#kontak" id="contactLink"><i class="fas fa-envelope"></i> Kontak</a>
+    </nav>
+  </header>
+
+  <!-- Section homepage -->
+  <section class="homepage" id="homepage">
+    <div class="welcome-content">
+      <h1>Selamat Datang</h1>
+      <p>Kelola deadline tugas kuliah Anda dengan mudah dan efektif. Aplikasi ini membantu Anda memantau tugas-tugas yang harus diselesaikan dengan fitur countdown.</p>
+      <div class="welcome-buttons">
+        <a href="#mainContent" class="welcome-btn tasks" id="taskListBtn">
+          <i class="fas fa-tasks"></i> List Tugas
+        </a>
+        <a href="#historyContent" class="welcome-btn history" id="taskHistoryBtn">
+          <i class="fas fa-history"></i> Riwayat Tugas
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Konten utama -->
+  <div class="container" id="mainContent" style="display: none;">
+    <div class="toolbar">
+      <div class="left-tools">
+        <button class="btn" onclick="openAddTaskModal()">
+          <i class="fas fa-plus"></i> Tambah Tugas
+        </button>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Cari tugas..." oninput="filterTasks()">
+        </div>
+      </div>
+      <div class="right-tools">
+        <div class="sort-selector">
+          <select id="sortBy" onchange="filterTasks()">
+            <option value="deadline">Urutkan: Deadline</option>
+            <option value="name">Urutkan: Nama</option>
+            <option value="course">Urutkan: Mata Kuliah</option>
+          </select>
+        </div>
+        <button class="btn btn-view btn-round" id="viewToggleBtn" onclick="toggleView()">
+          <i class="fas fa-th-large"></i>
+        </button>
+        <button class="btn theme-toggle btn-round" onclick="toggleDarkMode()">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="task-list" id="taskList"></div>
+  </div>
+
+  <!-- Section riwayat tugas -->
+  <div class="history-section" id="historyContent" style="display: none;">
+    <div class="history-header">
+      <h1 class="history-title"><i class="fas fa-history"></i> Riwayat Tugas</h1>
+      <div class="history-controls">
+        <button class="btn" onclick="clearCompletedTasks()">
+          <i class="fas fa-trash"></i> Hapus Riwayat
+        </button>
+        <button class="btn" onclick="showMainContent()">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+      </div>
+    </div>
+
+    <div class="history-stats" id="historyStats"></div>
+    <div class="task-list" id="historyList"></div>
+  </div>
+
+  <!-- Section tentang -->
+  <div class="about-section" id="aboutSection" style="display: none;">
+    <h2><i class="fas fa-info-circle"></i> Tentang Aplikasi Countdown Tugas</h2>
+    
+    <p>Aplikasi ini dikembangkan sebagai proyek akhir semester untuk mata kuliah Pemrograman Web. Tujuan utama aplikasi ini adalah membantu mahasiswa dalam mengelola dan memantau deadline tugas-tugas kuliah mereka secara lebih efektif.</p>
+    
+    <h3>Fitur Utama:</h3>
+    <ul>
+      <li><strong>Manajemen Tugas:</strong> Tambah, edit, dan hapus tugas dengan informasi lengkap termasuk mata kuliah, judul, deskripsi, dan deadline</li>
+      <li><strong>Countdown Otomatis:</strong> Menampilkan waktu tersisa hingga deadline dengan warna yang berubah sesuai urgensi</li>
+      <li><strong>Progress Bar Visual:</strong> Grafik visual yang menunjukkan progres waktu menuju deadline</li>
+      <li><strong>Kategori Tugas:</strong> Klasifikasi tugas berdasarkan jenis (Akademik, Proyek, Ujian, Lainnya)</li>
+      <li><strong>Tampilan Fleksibel:</strong> Pilihan tampilan grid atau list sesuai preferensi pengguna</li>
+      <li><strong>Mode Gelap/Terang:</strong> Dukungan tampilan yang nyaman di berbagai kondisi pencahayaan</li>
+      <li><strong>Penyimpanan Lokal:</strong> Data tugas disimpan di browser pengguna sehingga tidak hilang saat halaman dimuat ulang</li>
+    </ul>
+    
+    <h3>Tujuan Pembuatan:</h3>
+    <ol>
+      <li>Menerapkan konsep-konsep pemrograman web yang telah dipelajari selama semester</li>
+      <li>Menciptakan solusi nyata untuk masalah manajemen waktu yang dihadapi mahasiswa</li>
+      <li>Mengintegrasikan berbagai teknologi web (HTML5, CSS3, JavaScript) dalam satu aplikasi fungsional</li>
+      <li>Memberikan pengalaman praktik langsung dalam pengembangan aplikasi web modern</li>
+    </ol>
+    
+    <div class="team-members">
+      <div class="team-member">
+        <h4><i class="fas fa-users"></i> Kelompok 7</h4>
+        <p>Anggota Kelompok:</p>
+        <ul>
+          <li>Raffi Putra Nugraha (245150700111004)</li>
+          <li>Hadijaya Bayu Mustikoaji (245150707111011)</li>
+          <li>Samuel Christopher Tandayu (245150707111001)</li>
+        </ul>
+      </div>
+      
+      <div class="team-member">
+        <h4><i class="fas fa-book"></i> Informasi Kuliah</h4>
+        <p><strong>Mata Kuliah:</strong> Dasar Desain Antarmuka Pengguna</p>
+        <p><strong>Dosen Pengampu:</strong> Buce Trias Hanggara</p>
+        <p><strong>Semester:</strong> Genap 2024/2025</p>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+  </div>
+
+  <!-- Section kontak -->
+  <div class="contact-section" id="contactSection" style="display: none;">
+    <h2><i class="fas fa-envelope"></i> Kontak Kami</h2>
+    
+    <p>Berikut adalah informasi kontak anggota tim pengembang aplikasi ini:</p>
+    
+    <ul class="contact-list">
+      <li>
+        <div class="contact-name">Raffi Putra Nugraha</div>
+        <div class="contact-email">
+          <a href="mailto:raffipn26@student.ub.ac.id">raffipn26@student.ub.ac.id</a>
+        </div>
+      </li>
+      <li>
+        <div class="contact-name">Hadijaya Bayu Mustikoaji</div>
+        <div class="contact-email">
+          <a href="mailto:anggota2@example.com">anggota2@example.com</a>
+        </div>
+      </li>
+      <li>
+        <div class="contact-name">Samuel Christopher Tandayu</div>
+        <div class="contact-email">
+          <a href="mailto:anggota3@example.com">anggota3@example.com</a>
+        </div>
+      </li>
+    </ul>
+    
+    <p>Untuk pertanyaan lebih lanjut tentang aplikasi ini, silakan hubungi salah satu anggota tim di atas.</p>
+    
+    <a href="#" class="back-btn" id="backBtnContact"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+  </div>
+
+  <!-- Modal untuk menambah/mengedit tugas -->
+  <div class="modal" id="taskModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <h2 id="modalTitle">Tambah Tugas Baru</h2>
+      <form id="taskForm">
+        <input type="hidden" id="taskIndex" value="-1">
+        <div class="form-group">
+          <label for="taskCourse">Mata Kuliah</label>
+          <input type="text" id="taskCourse" required placeholder="Masukkan nama mata kuliah">
+        </div>
+        <div class="form-group">
+          <label for="taskTitle">Judul Tugas</label>
+          <input type="text" id="taskTitle" required placeholder="Masukkan judul tugas">
+        </div>
+        <div class="form-group">
+          <label for="taskDesc">Deskripsi</label>
+          <textarea id="taskDesc" rows="3" placeholder="Deskripsi tugas (opsional)"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="taskDeadline">Deadline</label>
+          <input type="datetime-local" id="taskDeadline" required>
+        </div>
+        <div class="form-group">
+          <label for="taskCategory">Kategori</label>
+          <select id="taskCategory">
+            <option value="academic">Akademik</option>
+            <option value="project">Proyek</option>
+            <option value="exam">Ujian</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-danger" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal konfirmasi hapus -->
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <h2>Konfirmasi</h2>
+      <p>Apakah Anda yakin ingin menghapus tugas ini?</p>
+      <input type="hidden" id="deleteTaskIndex">
+      <div class="modal-actions">
+        <button class="btn" onclick="closeConfirmModal()">Batal</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal konfirmasi hapus riwayat -->
+  <div class="modal" id="confirmClearModal">
+    <div class="modal-content">
+      <h2>Konfirmasi</h2>
+      <p>Apakah Anda yakin ingin menghapus semua riwayat tugas yang sudah selesai?</p>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeConfirmClearModal()">Batal</button>
+        <button class="btn btn-danger" onclick="confirmClearHistory()">Hapus Semua</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifikasi -->
+  <div class="notification" id="notification">
+    <div class="notification-icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="notification-message" id="notificationMessage"></div>
+    <button class="notification-close" onclick="closeNotification()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div><strong><i class="fas fa-users"></i> Kelompok 7</strong><br/>Proyek Akhir Semester</div>
+    <div><strong><i class="fas fa-envelope"></i> Prodi:</strong><br/>Dasar Desain Antarmuka Pengguna</div>
+    <div><strong><i class="fas fa-calendar-alt"></i> Tahun:</strong><br/>2025</div>
+  </footer>
+
+  <!-- Link ke file JavaScript eksternal -->
+  <script src="script.js"></script>
+</body>
+</html>
