@@ -1,4 +1,4 @@
-    // Menyimpan elemen DOM
+// Menyimpan elemen DOM
     const taskList = document.getElementById("taskList");
     const taskForm = document.getElementById("taskForm");
     const taskModal = document.getElementById("taskModal");
