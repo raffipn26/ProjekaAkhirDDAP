@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Countdown Tugas Mahasiswa</title>
-  
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  
+
   <!-- Link ke file CSS eksternal -->
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!-- Header dengan navigasi -->
   <header>
@@ -19,14 +21,79 @@
       <a href="#" id="homeLink" class="active"><i class="fas fa-home"></i> Beranda</a>
       <a href="#tentang" id="aboutLink"><i class="fas fa-info-circle"></i> Tentang</a>
       <a href="#kontak" id="contactLink"><i class="fas fa-envelope"></i> Kontak</a>
+      <a href="#profil" id="profileLink"><i class="fas fa-user"></i> Profil</a>
+      <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Keluar</a>
     </nav>
   </header>
+
+  <!-- Login Section -->
+  <div class="login-section" id="loginSection">
+    <div class="login-container">
+      <div class="login-header">
+        <i class="fas fa-tasks"></i>
+        <h1>Countdown Tugas</h1>
+        <p>Kelola deadline tugas kuliah Anda</p>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="loginEmail" required placeholder="nama@student.ub.ac.id">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="loginPassword" required placeholder="Masukkan password">
+        </div>
+        <button type="submit" class="btn btn-login">
+          <i class="fas fa-sign-in-alt"></i> Masuk
+        </button>
+      </form>
+      <div class="login-footer">
+        <p>Belum punya akun? <a href="#" id="showRegisterLink">Daftar di sini</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Section -->
+  <div class="register-section" id="registerSection" style="display: none;">
+    <div class="login-container">
+      <div class="login-header">
+        <i class="fas fa-user-plus"></i>
+        <h1>Daftar Akun Baru</h1>
+        <p>Buat akun untuk mulai mengelola tugas</p>
+      </div>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerName"><i class="fas fa-user"></i> Nama Lengkap</label>
+          <input type="text" id="registerName" required placeholder="Nama lengkap Anda">
+        </div>
+        <div class="form-group">
+          <label for="registerEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="registerEmail" required placeholder="nama@student.ub.ac.id">
+        </div>
+        <div class="form-group">
+          <label for="registerPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="registerPassword" required placeholder="Minimal 6 karakter">
+        </div>
+        <div class="form-group">
+          <label for="registerConfirmPassword"><i class="fas fa-lock"></i> Konfirmasi Password</label>
+          <input type="password" id="registerConfirmPassword" required placeholder="Ketik ulang password">
+        </div>
+        <button type="submit" class="btn btn-login">
+          <i class="fas fa-user-plus"></i> Daftar
+        </button>
+      </form>
+      <div class="login-footer">
+        <p>Sudah punya akun? <a href="#" id="showLoginLink">Masuk di sini</a></p>
+      </div>
+    </div>
+  </div>
 
   <!-- Section homepage -->
   <section class="homepage" id="homepage">
     <div class="welcome-content">
       <h1>Selamat Datang</h1>
-      <p>Kelola deadline tugas kuliah Anda dengan mudah dan efektif. Aplikasi ini membantu Anda memantau tugas-tugas yang harus diselesaikan dengan fitur countdown.</p>
+      <p>Kelola deadline tugas kuliah Anda dengan mudah dan efektif. Aplikasi ini membantu Anda memantau tugas-tugas
+        yang harus diselesaikan dengan fitur countdown.</p>
       <div class="welcome-buttons">
         <a href="#mainContent" class="welcome-btn tasks" id="taskListBtn">
           <i class="fas fa-tasks"></i> List Tugas
@@ -91,20 +158,25 @@
   <!-- Section tentang -->
   <div class="about-section" id="aboutSection" style="display: none;">
     <h2><i class="fas fa-info-circle"></i> Tentang Aplikasi Countdown Tugas</h2>
-    
-    <p>Aplikasi ini dikembangkan sebagai proyek akhir semester untuk mata kuliah Pemrograman Web. Tujuan utama aplikasi ini adalah membantu mahasiswa dalam mengelola dan memantau deadline tugas-tugas kuliah mereka secara lebih efektif.</p>
-    
+
+    <p>Aplikasi ini dikembangkan sebagai proyek akhir semester untuk mata kuliah Pemrograman Web. Tujuan utama aplikasi
+      ini adalah membantu mahasiswa dalam mengelola dan memantau deadline tugas-tugas kuliah mereka secara lebih
+      efektif.</p>
+
     <h3>Fitur Utama:</h3>
     <ul>
-      <li><strong>Manajemen Tugas:</strong> Tambah, edit, dan hapus tugas dengan informasi lengkap termasuk mata kuliah, judul, deskripsi, dan deadline</li>
-      <li><strong>Countdown Otomatis:</strong> Menampilkan waktu tersisa hingga deadline dengan warna yang berubah sesuai urgensi</li>
+      <li><strong>Manajemen Tugas:</strong> Tambah, edit, dan hapus tugas dengan informasi lengkap termasuk mata kuliah,
+        judul, deskripsi, dan deadline</li>
+      <li><strong>Countdown Otomatis:</strong> Menampilkan waktu tersisa hingga deadline dengan warna yang berubah
+        sesuai urgensi</li>
       <li><strong>Progress Bar Visual:</strong> Grafik visual yang menunjukkan progres waktu menuju deadline</li>
       <li><strong>Kategori Tugas:</strong> Klasifikasi tugas berdasarkan jenis (Akademik, Proyek, Ujian, Lainnya)</li>
       <li><strong>Tampilan Fleksibel:</strong> Pilihan tampilan grid atau list sesuai preferensi pengguna</li>
       <li><strong>Mode Gelap/Terang:</strong> Dukungan tampilan yang nyaman di berbagai kondisi pencahayaan</li>
-      <li><strong>Penyimpanan Lokal:</strong> Data tugas disimpan di browser pengguna sehingga tidak hilang saat halaman dimuat ulang</li>
+      <li><strong>Penyimpanan Lokal:</strong> Data tugas disimpan di browser pengguna sehingga tidak hilang saat halaman
+        dimuat ulang</li>
     </ul>
-    
+
     <h3>Tujuan Pembuatan:</h3>
     <ol>
       <li>Menerapkan konsep-konsep pemrograman web yang telah dipelajari selama semester</li>
@@ -112,7 +184,7 @@
       <li>Mengintegrasikan berbagai teknologi web (HTML5, CSS3, JavaScript) dalam satu aplikasi fungsional</li>
       <li>Memberikan pengalaman praktik langsung dalam pengembangan aplikasi web modern</li>
     </ol>
-    
+
     <div class="team-members">
       <div class="team-member">
         <h4><i class="fas fa-users"></i> Kelompok</h4>
@@ -124,7 +196,7 @@
           <li>Hasan Huzaifi ()</li>
         </ul>
       </div>
-      
+
       <div class="team-member">
         <h4><i class="fas fa-book"></i> Informasi Kuliah</h4>
         <p><strong>Mata Kuliah:</strong> Pengembangan Aplikasi Web</p>
@@ -132,16 +204,16 @@
         <p><strong>Semester:</strong> Ganjil 2025/2026</p>
       </div>
     </div>
-    
+
     <a href="#" class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
   </div>
 
   <!-- Section kontak -->
   <div class="contact-section" id="contactSection" style="display: none;">
     <h2><i class="fas fa-envelope"></i> Kontak Kami</h2>
-    
+
     <p>Berikut adalah informasi kontak anggota tim pengembang aplikasi ini:</p>
-    
+
     <ul class="contact-list">
       <li>
         <div class="contact-name">Raffi Putra Nugraha</div>
@@ -168,9 +240,9 @@
         </div>
       </li>
     </ul>
-    
+
     <p>Untuk pertanyaan lebih lanjut tentang aplikasi ini, silakan hubungi salah satu anggota tim di atas.</p>
-    
+
     <a href="#" class="back-btn" id="backBtnContact"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
   </div>
 
@@ -250,14 +322,128 @@
     </button>
   </div>
 
+  <!-- Section Profil -->
+<div class="profile-section" id="profileSection" style="display: none;">
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <h2 id="profileName">Nama User</h2>
+      <p id="profileEmail">email@student.ub.ac.id</p>
+    </div>
+
+    <div class="profile-stats">
+      <div class="stat-item">
+        <i class="fas fa-tasks"></i>
+        <div class="stat-info">
+          <div class="stat-value" id="totalTasks">0</div>
+          <div class="stat-label">Total Tugas</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-check-circle"></i>
+        <div class="stat-info">
+          <div class="stat-value" id="completedTasks">0</div>
+          <div class="stat-label">Tugas Selesai</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-clock"></i>
+        <div class="stat-info">
+          <div class="stat-value" id="pendingTasks">0</div>
+          <div class="stat-label">Tugas Aktif</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-info">
+      <h3><i class="fas fa-info-circle"></i> Informasi Akun</h3>
+      <div class="info-item">
+        <span class="info-label">Nama:</span>
+        <span class="info-value" id="infoName">-</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Email:</span>
+        <span class="info-value" id="infoEmail">-</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Bergabung:</span>
+        <span class="info-value" id="infoJoined">-</span>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn" onclick="showEditProfileModal()">
+        <i class="fas fa-edit"></i> Edit Profil
+      </button>
+      <button class="btn btn-danger" onclick="showChangePasswordModal()">
+        <i class="fas fa-key"></i> Ubah Password
+      </button>
+      <a href="#" class="btn" onclick="showHomeSection()">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Profil -->
+<div class="modal" id="editProfileModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeEditProfileModal()"><i class="fas fa-times"></i></button>
+    <h2>Edit Profil</h2>
+    <form id="editProfileForm">
+      <div class="form-group">
+        <label for="editName">Nama Lengkap</label>
+        <input type="text" id="editName" required>
+      </div>
+      <div class="form-group">
+        <label for="editEmail">Email</label>
+        <input type="email" id="editEmail" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger" onclick="closeEditProfileModal()">Batal</button>
+        <button type="submit" class="btn">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Ubah Password -->
+<div class="modal" id="changePasswordModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
+    <h2>Ubah Password</h2>
+    <form id="changePasswordForm">
+      <div class="form-group">
+        <label for="currentPassword">Password Saat Ini</label>
+        <input type="password" id="currentPassword" required>
+      </div>
+      <div class="form-group">
+        <label for="newPassword">Password Baru</label>
+        <input type="password" id="newPassword" required minlength="6">
+      </div>
+      <div class="form-group">
+        <label for="confirmNewPassword">Konfirmasi Password Baru</label>
+        <input type="password" id="confirmNewPassword" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger" onclick="closeChangePasswordModal()">Batal</button>
+        <button type="submit" class="btn">Ubah Password</button>
+      </div>
+    </form>
+  </div>
+</div>
+
   <!-- Footer -->
   <footer>
-    <div><strong><i class="fas fa-users"></i> Kelompok</strong><br/>Proyek Akhir Semester</div>
-    <div><strong><i class="fas fa-envelope"></i> Prodi:</strong><br/>Pengembangan Aplikasi Web</div>
-    <div><strong><i class="fas fa-calendar-alt"></i> Tahun:</strong><br/>2025</div>
+    <div><strong><i class="fas fa-users"></i> Kelompok</strong><br />Proyek Akhir Semester</div>
+    <div><strong><i class="fas fa-envelope"></i> Prodi:</strong><br />Pengembangan Aplikasi Web</div>
+    <div><strong><i class="fas fa-calendar-alt"></i> Tahun:</strong><br />2025</div>
   </footer>
 
   <!-- Link ke file JavaScript eksternal -->
   <script src="script.js"></script>
 </body>
+
 </html>
